@@ -11,7 +11,7 @@ h1 {
 
 .timeline {
     display: grid;
-    grid-template-columns: repeat(24, 1fr);
+    grid-template-columns: auto repeat(7, 1fr);
     grid-gap: 10px;
     background-color: white;
     padding: 20px;
@@ -19,27 +19,28 @@ h1 {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.hours {
-    display: grid;
-    grid-column: 1 / 25;
-    grid-template-columns: repeat(24, 1fr);
-}
-
-.hour {
-    text-align: center;
-    font-size: 0.75em;
-    padding-top: 5px;
-    color: #555;
-}
-
 .day-title {
-    grid-column: 1 / 25;
     background-color: #f8f8f8;
     padding: 10px 0;
     border-radius: 4px;
     font-weight: bold;
-    margin-bottom: 5px;
     text-align: center;
+}
+
+.hours {
+    display: contents;
+}
+
+.hour {
+    text-align: left;
+    font-size: 0.75em;
+    color: #555;
+    align-self: center;
+    padding: 5px 0;
+}
+
+.day {
+    display: contents;
 }
 
 .shift {
