@@ -1,0 +1,60 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    height: 100vh;
+    font-family: Arial, sans-serif;
+}
+#sidebar {
+    flex: 0 0 300px;
+    padding: 20px;
+    background: linear-gradient(180deg, #a7c7e7, #89cff0);
+    overflow-y: auto;
+    border-right: 1px solid #ddd;
+}
+#content {
+    flex-grow: 1;
+    overflow: auto;
+}
+table {
+    border-collapse: collapse;
+    width: 100%;
+    min-width: 600px;
+}
+th, td {
+    border: 1px solid #dddddd;
+    text-align: center;
+    padding: 8px;
+    min-width: 70px;
+    position: relative;
+}
+.agent-cell {
+    display: block;
+    padding: 2px;
+    border-radius: 4px;
+    color: #fff;
+    margin: 1px;
+    font-size: 0.75rem;
+    width: calc(100% - 2px);
+    text-align: center;
+}
+.agent-control {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    background: white;
+    border: 1px solid #cccccc;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 5px;
+}
+button {
+    cursor: pointer;
+    border: 1px solid #ccc;
+    padding: 6px 12px;
+    background-color: #f8f8f8;
+    border-radius: 4px;
+}
+button:hover {
+    background-color: #e2e2e2;
+}
