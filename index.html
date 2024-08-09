@@ -4,10 +4,49 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Agent Working Hours</title>
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: #f9f9f9;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
+
+        thead th {
+            background-color: #343a40;
+            color: #ffffff;
+            padding: 10px;
+        }
+
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: center;
+            vertical-align: middle;
+            padding: 8px;
+            height: 30px; /* Adjust cell height for better visibility */
+        }
+
+        .judiemae {
+            background-color: #ffcccb;
+        }
+
+        .thelma {
+            background-color: #add8e6;
+        }
+
+        .newagent {
+            background-color: #90ee90;
+        }
+    </style>
 </head>
 <body>
-    <table>
+    <table id="scheduleTable">
         <thead>
             <tr>
                 <th>Time</th>
@@ -21,33 +60,51 @@
             </tr>
         </thead>
         <tbody>
-            <!-- Layout for every hour in a 24-hour format -->
-            <!-- Outer loop over each hour -->
-            <tr><td>12:00 AM</td><td class="judiemae">Judiemae</td><td class="thelma">Thelma</td><td class="thelma">Thelma</td><td class="thelma">Thelma</td><td class="thelma">Thelma</td><td class="newagent">New Agent</td><td></td></tr>
-            <tr><td>1:00 AM</td><td class="judiemae">Judiemae</td><td class="thelma">Thelma</td><td class="thelma">Thelma</td><td class="thelma">Thelma</td><td class="thelma">Thelma</td><td class="newagent">New Agent</td><td></td></tr>
-            <tr><td>2:00 AM</td><td class="judiemae">Judiemae</td><td class="thelma">Thelma</td><td class="thelma">Thelma</td><td class="thelma">Thelma</td><td class="thelma">Thelma</td><td class="newagent">New Agent</td><td></td></tr>
-            <tr><td>3:00 AM</td><td class="judiemae">Judiemae</td><td class="thelma">Thelma</td><td class="thelma">Thelma</td><td class="thelma">Thelma</td><td class="thelma">Thelma</td><td class="newagent">New Agent</td><td></td></tr>
-            <tr><td>4:00 AM</td><td class="judiemae">Judiemae</td><td class="thelma">Thelma</td><td class="thelma">Thelma</td><td class="thelma">Thelma</td><td class="thelma">Thelma</td><td class="newagent">New Agent</td><td></td></tr>
-            <tr><td>5:00 AM</td><td></td><td class="thelma">Thelma</td><td class="thelma">Thelma</td><td class="thelma">Thelma</td><td class="thelma">Thelma</td><td class="newagent">New Agent</td><td></td></tr>
-            <tr><td>6:00 AM</td><td></td><td class="thelma">Thelma</td><td class="thelma">Thelma</td><td class="thelma">Thelma</td><td class="thelma">Thelma</td><td class="newagent">New Agent</td><td></td></tr>
-            <tr><td>7:00 AM</td><td></td><td class="thelma">Thelma</td><td class="thelma">Thelma</td><td class="thelma">Thelma</td><td class="thelma">Thelma</td><td class="newagent">New Agent</td><td></td></tr>
-            <tr><td>8:00 AM</td><td></td><td class="thelma">Thelma</td><td class="thelma">Thelma</td><td class="thelma">Thelma</td><td class="thelma">Thelma</td><td class="newagent">New Agent</td><td></td></tr>
-            <tr><td>9:00 AM</td><td></td><td class="thelma">Thelma</td><td class="thelma">Thelma</td><td class="thelma">Thelma</td><td class="thelma">Thelma</td><td class="newagent">New Agent</td><td></td></tr>
-            <tr><td>10:00 AM</td><td></td><td class="thelma">Thelma</td><td class="thelma">Thelma</td><td class="thelma">Thelma</td><td class="thelma">Thelma</td><td class="newagent">New Agent</td><td></td></tr>
-            <tr><td>11:00 AM</td><td></td><td class="thelma">Thelma</td><td class="thelma">Thelma</td><td class="thelma">Thelma</td><td class="thelma">Thelma</td><td class="newagent">New Agent</td><td></td></tr>
-            <tr><td>12:00 PM</td><td></td><td class="thelma">Thelma</td><td class="thelma">Thelma</td><td class="thelma">Thelma</td><td class="thelma">Thelma</td><td class="newagent">New Agent</td><td></td></tr>
-            <tr><td>1:00 PM</td><td></td><td></td><td></td><td></td><td></td><td class="newagent">New Agent</td><td class="newagent">New Agent</td></tr>
-            <tr><td>2:00 PM</td><td></td><td></td><td></td><td></td><td></td><td class="newagent">New Agent</td><td class="newagent">New Agent</td></tr>
-            <tr><td>3:00 PM</td><td></td><td></td><td></td><td></td><td></td><td class="newagent">New Agent</td><td class="newagent">New Agent</td></tr>
-            <tr><td>4:00 PM</td><td></td><td></td><td></td><td></td><td></td><td class="newagent">New Agent</td><td class="newagent">New Agent</td></tr>
-            <tr><td>5:00 PM</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-            <tr><td>6:00 PM</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-            <tr><td>7:00 PM</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-            <tr><td>8:00 PM</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-            <tr><td>9:00 PM</td><td class="judiemae">Judiemae</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-            <tr><td>10:00 PM</td><td class="judiemae">Judiemae</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-            <tr><td>11:00 PM</td><td class="judiemae">Judiemae</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <!-- Rows will be generated by JavaScript -->
         </tbody>
     </table>
+
+    <script>
+        const tableBody = document.querySelector('#scheduleTable tbody');
+        const agents = [
+            { name: 'Judiemae', days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday'], startHour: 21, endHour: 5 },
+            { name: 'Thelma', days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'], startHour: 5, endHour: 13 },
+            { name: 'New Agent', days: ['Friday', 'Saturday', 'Sunday', 'Monday', 'Tuesday'], startHour: 13, endHour: 21 }
+        ];
+
+        // Helper function to determine if agent is working at given hour
+        function isWorking(agent, dayIndex, hour) {
+            const dayName = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][dayIndex];
+            if (agent.days.includes(dayName)) {
+                if (agent.startHour > agent.endHour) { // Overnight shift
+                    return hour >= agent.startHour || hour < agent.endHour;
+                } else {
+                    return hour >= agent.startHour && hour < agent.endHour;
+                }
+            }
+            return false;
+        }
+
+        // Generate each hour's row
+        for (let hour = 0; hour < 24; hour++) {
+            const row = document.createElement('tr');
+            const timeCell = document.createElement('td');
+            timeCell.textContent = `${hour}:00`;
+            row.appendChild(timeCell);
+
+            for (let day = 0; day < 7; day++) {
+                const cell = document.createElement('td');
+                agents.forEach(agent => {
+                    if (isWorking(agent, day, hour)) {
+                        cell.classList.add(agent.name.toLowerCase().replace(' ', ''));
+                        cell.textContent = agent.name;
+                    }
+                });
+                row.appendChild(cell);
+            }
+
+            tableBody.appendChild(row);
+        }
+    </script>
 </body>
 </html>
