@@ -32,11 +32,13 @@ th, td {
     display: block;
     padding: 2px;
     border-radius: 4px;
-    color: #fff;
+    color: black; /* Changed from #fff to black */
+    background-color: #fff; /* Added background color for visibility */
     margin: 1px;
     font-size: 0.75rem;
     width: calc(100% - 2px);
     text-align: center;
+    background: inherit; /* This makes the cell inherit the background color of the td */
 }
 .agent-control {
     display: flex;
