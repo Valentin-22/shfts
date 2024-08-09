@@ -8,44 +8,27 @@
         body, html {
             margin: 0;
             padding: 0;
-            font-family: 'Arial', sans-serif;
+            font-family: Arial, sans-serif;
             background-color: #f9f9f9;
-            overflow-x: auto; /* Allows table to be scrollable horizontally if needed */
+            overflow-x: auto; /* Allows horizontal scrolling if necessary */
+            font-size: 12px; /* Smaller base font size */
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            table-layout: fixed; /* Keeps columns evenly spaced */
-            font-size: 0.8rem; /* Smaller font size for fitting text in smaller cells */
-        }
-
-        thead {
-            display: flex;
-            background-color: #343a40;
-            color: #ffffff;
-            overflow-x: auto; /* Scroll horizontally on small screens */
-        }
-
-        thead th {
-            flex: 1;
-            text-align: center;
-            padding: 10px;
-            min-width: 90px; /* Ensure each header has a minimum width */
-        }
-
-        tbody tr {
-            display: flex;
         }
 
         th, td {
             border: 1px solid #dddddd;
             text-align: center;
-            vertical-align: middle;
-            padding: 8px;
-            height: 40px; /* Smaller fixed height for cells */
-            flex: 1;  /* Flex basis for each cell */
-            white-space: nowrap; /* Keeps content on a single line */
+            padding: 5px; /* Reduced padding */
+            height: 30px; /* Reduced cell height */
+        }
+
+        thead th {
+            background-color: #343a40;
+            color: #ffffff;
         }
 
         .judiemae {
@@ -100,11 +83,10 @@
             return false;
         }
 
-        // Generate each hour's row
         for (let hour = 0; hour < 24; hour++) {
             const row = document.createElement('tr');
             const timeCell = document.createElement('td');
-            timeCell.textContent = `${hour}:00`;
+            timeCell.textContent = hour < 10 ? `0${hour}:00` : `${hour}:00`;
             row.appendChild(timeCell);
 
             for (let day = 0; day < 7; day++) {
@@ -117,7 +99,6 @@
                 });
                 row.appendChild(cell);
             }
-
             tableBody.appendChild(row);
         }
     </script>
