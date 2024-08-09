@@ -8,37 +8,70 @@
         body, html {
             margin: 0;
             padding: 0;
-            display: flex; /* Aligns the sidebar and the table horizontally */
-            height: 100vh; /* Prevents vertical scrolling by limiting the height to the viewport */
+            display: flex;
+            height: 100vh;
+            font-family: Arial, sans-serif;
         }
+
         #sidebar {
-            flex: 0 0 200px; /* Sidebar width */
+            flex: 0 0 250px;
             padding: 20px;
-            background-color: #f0f0f0;
-            overflow-y: auto; /* Allows scrolling within the sidebar if needed */
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column; 
+            overflow-x: auto;
         }
+
         #content {
             flex-grow: 1;
-            overflow-x: auto; /* Allows horizontal scrolling for the table */
+            overflow-x: auto;
         }
+
         table {
             border-collapse: collapse;
             width: 100%;
             min-width: 600px;
         }
+
         th, td {
             border: 1px solid #dddddd;
             text-align: center;
             padding: 8px;
             min-width: 70px;
         }
+
         th {
             background-color: #343a40;
             color: #ffffff;
         }
+
+        .agent-control {
+            margin-bottom: 10px;
+            border: 1px solid #cccccc;
+            padding: 10px;
+            border-radius: 5px;
+            background: white;
+        }
+
+        .flex-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+
+        .flex-row input,
+        .flex-row select {
+            margin-left: 10px;
+        }
+
         .judiemae { background-color: #ffcccb; }
         .thelma { background-color: #add8e6; }
         .newagent { background-color: #90ee90; }
+
+        button {
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -73,10 +106,11 @@
             { name: 'Thelma', days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'], startHour: 5, endHour: 13 },
             { name: 'New Agent', days: ['Friday', 'Saturday', 'Sunday', 'Monday', 'Tuesday'], startHour: 13, endHour: 21 }
         ];
+        const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
         function updateTable() {
             const tbody = document.querySelector('#scheduleTable tbody');
-            tbody.innerHTML = ''; // Clear the table first
+            tbody.innerHTML = ''; 
             for (let hour = 0; hour < 24; hour++) {
                 const row = document.createElement('tr');
                 const timeCell = document.createElement('td');
@@ -86,7 +120,7 @@
                 for (let day = 0; day < 7; day++) {
                     const cell = document.createElement('td');
                     agents.forEach(agent => {
-                        const dayName = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][day];
+                        const dayName = daysOfWeek[day];
                         if (agent.days.includes(dayName) && isWorking(agent, hour)) {
                             cell.classList.add(agent.name.toLowerCase().replace(' ', ''));
                             cell.textContent = agent.name;
@@ -99,22 +133,22 @@
         }
 
         function isWorking(agent, hour) {
-            if (agent.startHour > agent.endHour) { // Overnight shift
-                return hour >= agent.startHour || hour < agent.endHour;
-            } else {
-                return hour >= agent.startHour && hour < agent.endHour;
-            }
+            return agent.startHour > agent.endHour
+                ? hour >= agent.startHour || hour < agent.endHour
+                : hour >= agent.startHour && hour < agent.endHour;
         }
 
         function buildAgentControls() {
             const controls = document.getElementById('agentControls');
-            controls.innerHTML = ''; // Clear existing controls
+            controls.innerHTML = ''; 
             agents.forEach((agent, index) => {
                 const div = document.createElement('div');
-                div.innerHTML = `<strong>${agent.name}</strong>
-                                 <button onclick="removeAgent(${index})">-</button>
-                                 Start: <input type="number" value="${agent.startHour}" onchange="updateAgent(${index}, 'startHour', this.value)">
-                                 End: <input type="number" value="${agent.endHour}" onchange="updateAgent(${index}, 'endHour', this.value)">`;
+                div.className = 'agent-control';
+                let controlsHTML = `<div class="flex-row"><strong>${agent.name}</strong><button onclick="removeAgent(${index})">-</button></div>`;
+                controlsHTML += `<div class="flex-row">Start: <input type="number" value="${agent.startHour}" onchange="updateAgent(${index}, 'startHour', parseInt(this.value))"></div>`;
+                controlsHTML += `<div class="flex-row">End: <input type="number" value="${agent.endHour}" onchange="updateAgent(${index}, 'endHour', parseInt(this.value))"></div>`;
+                controlsHTML += `<div class="flex-row">Days: ${daysOfWeek.map(day => `<input type="checkbox" ${agent.days.includes(day) ? 'checked' : ''} onchange="toggleDay('${agent.name}', '${day}')"> ${day}`).join(' ')}</div>`;
+                div.innerHTML = controlsHTML;
                 controls.appendChild(div);
             });
         }
@@ -122,7 +156,7 @@
         function addAgent() {
             const newName = prompt("Enter new agent's name:");
             if (newName) {
-                agents.push({ name: newName, days: ['Monday', 'Tuesday'], startHour: 9, endHour: 17 });
+                agents.push({ name: newName, days: ['Monday'], startHour: 9, endHour: 17 });
                 buildAgentControls();
                 updateTable();
             }
@@ -135,7 +169,18 @@
         }
 
         function updateAgent(index, field, value) {
-            agents[index][field] = parseInt(value);
+            agents[index][field] = value;
+            updateTable();
+        }
+
+        function toggleDay(agentName, day) {
+            const agent = agents.find(a => a.name === agentName);
+            const dayIndex = agent.days.indexOf(day);
+            if (dayIndex > -1) {
+                agent.days.splice(dayIndex, 1);
+            } else {
+                agent.days.push(day);
+            }
             updateTable();
         }
 
