@@ -1,43 +1,51 @@
 body, html {
-    height: 100%;
     margin: 0;
-    font-family: Arial, sans-serif;
-    font-size: 0.9em;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #f9f9f9;
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
-    table-layout: fixed;
+    margin-top: 20px;
 }
 
-thead {
-    background-color: #f4f4f4;
+thead th {
+    background-color: #343a40;
+    color: #ffffff;
 }
 
 th, td {
-    border: 1px solid #ddd;
+    border: 1px solid #dddddd;
     text-align: center;
-    padding: 8px;
+    vertical-align: middle;
+    padding: 10px;
 }
 
 td {
-    height: 50px;
+    background-color: #FFFFFF;
+    height: 40px;
 }
 
 .judiemae {
-    background-color: #ffcccb; /* Light red */
+    background-color: #ffcccb;  /* Light red background for Judiemae */
 }
 
 .thelma {
-    background-color: #add8e6; /* Light blue */
+    background-color: #add8e6;  /* Light blue background for Thelma */
 }
 
 .newagent {
-    background-color: #90ee90; /* Light green */
+    background-color: #90ee90;  /* Light green background for New Agent */
 }
 
-/* Overlapping shifts will have gradients indicating shared hours */
+/* Overlapping shifts uses gradient color */
 .thelma.newagent {
-    background: linear-gradient(to right, #add8e6 0%, #add8e6 50%, #90ee90 50%, #90ee90 100%);
+    background: linear-gradient(90deg, #add8e6 50%, #90ee90 50%);
+}
+
+/* Ensure you add !important to assure the gradients take preference if needed */
+.thelma.newagent {
+    background: linear-gradient(to right, #add8e6 50%, #90ee90 50%) !important;
 }
