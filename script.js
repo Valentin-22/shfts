@@ -14,10 +14,11 @@ function updateTable() {
         const timeCell = document.createElement('td');
         timeCell.textContent = hour < 10 ? `0${hour}:00` : `${hour}:00`;
         row.appendChild(timeCell);
-        for (let day = 0; day < 7; day++) {
+        for (let day = 0; day < daysOfWeek.length; day++) {
             const cell = document.createElement('td');
+            const dayOfTheWeek = daysOfWeek[day];
             const agentsWorkingThisHour = agents.filter(agent =>
-                agent.days.includes(daysOfWeek[day]) && isWorking(agent, hour)
+                agent.days.includes(dayOfTheWeek) && isWorking(agent, dayOfTheWeek, hour)
             );
             agentsWorkingThisHour.forEach(agent => {
                 const span = document.createElement('span');
@@ -35,8 +36,18 @@ function updateTable() {
     }
 }
 
-function isWorking(agent, hour) {
-    return agent.startHour > agent.endHour ? hour >= agent.startHour || hour < agent.endHour : hour >= agent.startHour && hour < agent.endHour;
+function isWorking(agent, dayOfTheWeek, hour) {
+    let startHour = agent.startHour;
+    let endHour = agent.endHour;
+
+    if (dayOfTheWeek === 'Sunday' && startHour > endHour) {
+        if (hour < startHour && hour >= endHour) return false;
+        return hour >= startHour;
+    } else if (startHour > endHour) {
+        return (hour >= startHour || hour < endHour);
+    } else {
+        return (hour >= startHour && hour < endHour);
+    }
 }
 
 function buildAgentControls() {
@@ -45,10 +56,10 @@ function buildAgentControls() {
     agents.forEach((agent, index) => {
         const div = document.createElement('div');
         div.className = 'agent-control';
-        let controlsHTML = `<div><input type="text" value="${agent.name}" onblur="updateAgentName(${index}, this.value)"> <button onclick="removeAgent(${index})">-</button></div>`;
-        controlsHTML += `<div>Start: <input type="number" value="${agent.startHour}" onchange="updateAgent(${index}, 'startHour', parseInt(this.value))"></div>`;
-        controlsHTML += `<div>End: <input type="number" value="${agent.endHour}" onchange="updateAgent(${index}, 'endHour', parseInt(this.value))"></div>`;
-        controlsHTML += `<div>Days: ${daysOfWeek.map(day => `<label><input type="checkbox" ${agent.days.includes(day) ? 'checked' : ''} onchange="toggleDay('${agent.name}', '${day}')">${day}</label>`).join(' ')}</div>`;
+        let controlsHTML = `<div><input type="text" value="${agent.name}" onblur="updateAgentName(${index}, this.value)"><button onclick="removeAgent(${index})">-</button></div>
+                <div>Start: <input type="number" value="${agent.startHour}" onchange="updateAgent(${index}, 'startHour', parseInt(this.value))"></div>
+                <div>End: <input type="number" value="${agent.endHour}" onchange="updateAgent(${index}, 'endHour', parseInt(this.value))"></div>
+                <div>Days: ${daysOfWeek.map(day => `<label><input type="checkbox" ${agent.days.includes(day) ? 'checked' : ''} onchange="toggleDay('${agent.name}', '${day}')">${day}</label>`).join(' ')}</div>`;
         div.innerHTML = controlsHTML;
         controls.appendChild(div);
     });
@@ -56,7 +67,7 @@ function buildAgentControls() {
 
 function addAgent() {
     const newName = prompt("Enter new agent's name:");
-    const newColor = generateRandomColor();
+    const newColor = '#'+(Math.random()*0xFFFFFF<<0).toString(16);
     if (newName) {
         agents.push({ name: newName, days: ['Monday'], startHour: 9, endHour: 17, color: newColor });
         buildAgentControls();
@@ -89,10 +100,6 @@ function toggleDay(agentName, day) {
         agent.days.push(day);
     }
     updateTable();
-}
-
-function generateRandomColor() {
-    return `#${Math.floor(Math.random()*16777215).toString(16)}`;
 }
 
 buildAgentControls();
