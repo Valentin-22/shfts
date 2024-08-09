@@ -12,7 +12,6 @@
             height: 100vh;
             font-family: Arial, sans-serif;
         }
-
         #sidebar {
             flex: 0 0 300px;
             padding: 20px;
@@ -20,18 +19,15 @@
             overflow-y: auto;
             border-right: 1px solid #ddd;
         }
-
         #content {
             flex-grow: 1;
             overflow-x: auto;
         }
-
         table {
             border-collapse: collapse;
             width: 100%;
             min-width: 600px;
         }
-
         th, td {
             border: 1px solid #dddddd;
             text-align: center;
@@ -39,18 +35,15 @@
             min-width: 70px;
             position: relative;
         }
-
         .agent-cell {
             display: block;
             padding: 2px;
             border-radius: 4px;
             margin: 1px;
             font-size: 0.75rem;
-            width: 100%;
+            width: calc(100% - 2px);
             text-align: center;
-            box-shadow: 1px 1px 2px rgba(0,0,0,0.2); /* Improve readability */
         }
-
         .agent-control {
             display: flex;
             flex-direction: column;
@@ -61,30 +54,6 @@
             margin-top: 10px;
             border-radius: 5px;
         }
-
-        .flex-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .day-checkboxes {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            justify-content: flex-start;
-            margin-top: 5px;
-        }
-
-        .day-checkbox {
-            display: flex;
-            align-items: center;
-        }
-
-        input[type="checkbox"] {
-            margin-right: 5px;
-        }
-
         button {
             cursor: pointer;
             border: none;
@@ -93,7 +62,6 @@
             border-radius: 4px;
             transition: background-color 0.3s;
         }
-
         button:hover {
             background-color: #e2e2e2;
         }
@@ -133,11 +101,6 @@
     ];
     const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
-    function generateRandomColor() {
-        let hue = Math.floor(Math.random() * 360);
-        return `hsl(${hue}, 100%, 80%)`;
-    }
-
     function updateTable() {
         const tbody = document.querySelector('#scheduleTable tbody');
         tbody.innerHTML = '';
@@ -153,14 +116,21 @@
                     agent.days.includes(daysOfWeek[day]) && isWorking(agent, hour)
                 );
 
-                agentsWorkingThisHour.forEach(agent => {
-                    const span = document.createElement('span');
-                    span.style.backgroundColor = agent.color;
-                    span.style.color = '#000'; // improved text color for better readability
-                    span.className = 'agent-cell';
-                    span.textContent = agent.name;
-                    cell.appendChild(span);
-                });
+                if (agentsWorkingThisHour.length === 1) {
+                    const agent = agentsWorkingThisHour[0];
+                    cell.textContent = agent.name;
+                    cell.style.backgroundColor = agent.color;
+                    cell.style.color = 'white';
+                } else if (agentsWorkingThisHour.length > 1) {
+                    agentsWorkingThisHour.forEach(agent => {
+                        const span = document.createElement('div');
+                        span.className = 'agent-cell';
+                        span.textContent = agent.name;
+                        span.style.backgroundColor = agent.color;
+                        span.style.color = 'white';
+                        cell.appendChild(span);
+                    });
+                }
 
                 row.appendChild(cell);
             }
@@ -174,67 +144,20 @@
             : hour >= agent.startHour && hour < agent.endHour;
     }
 
-    function buildAgentControls() {
-        const controls = document.getElementById('agentControls');
-        controls.innerHTML = '';
-        agents.forEach((agent, index) => {
-            const div = document.createElement('div');
-            div.className = 'agent-control';
-            let controlsHTML = `<div class="flex-row">
-                <input type="text" value="${agent.name}" onblur="updateAgentName(${index}, this.value)">
-                <button onclick="removeAgent(${index})">-</button>
-            </div>`;
-            controlsHTML += `<div class="flex-row">Start: <input type="number" value="${agent.startHour}" onchange="updateAgent(${index}, 'startHour', parseInt(this.value))"></div>`;
-            controlsHTML += `<div class="flex-row">End: <input type="number" value="${agent.endHour}" onchange="updateAgent(${index}, 'endHour', parseInt(this.value))"></div>`;
-            controlsHTML += `<div class="day-checkboxes">${daysOfWeek.map(day => `
-                <div class="day-checkbox">
-                    <input type="checkbox" ${agent.days.includes(day) ? 'checked' : ''}
-                    onchange="toggleDay('${agent.name}', '${day}')"> ${day}
-                </div>`).join('')}
-            </div>`;
-            div.innerHTML = controlsHTML;
-            controls.appendChild(div);
-        });
-    }
-
     function addAgent() {
         const newName = prompt("Enter new agent's name:");
         const newColor = generateRandomColor();
         if (newName) {
             agents.push({ name: newName, days: ['Monday'], startHour: 9, endHour: 17, color: newColor });
-            buildAgentControls();
             updateTable();
         }
     }
 
-    function removeAgent(index) {
-        agents.splice(index, 1);
-        buildAgentControls();
-        updateTable();
+    function generateRandomColor() {
+        let hue = Math.floor(Math.random() * 360);
+        return `hsl(${hue}, 100%, 80%)`;
     }
 
-    function updateAgent(index, field, value) {
-        agents[index][field] = value;
-        updateTable();
-    }
-
-    function updateAgentName(index, newName) {
-        agents[index].name = newName;
-        updateTable();
-    }
-
-    function toggleDay(agentName, day) {
-        const agent = agents.find(a => a.name === agentName);
-        const dayIndex = agent.days.indexOf(day);
-        if (dayIndex > -1) {
-            agent.days.splice(dayIndex, 1);
-        } else {
-            agent.days.push(day);
-        }
-        updateTable();
-    }
-
-    buildAgentControls();
     updateTable();
 </script>
 </body>
