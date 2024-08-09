@@ -14,14 +14,14 @@ table {
     border-collapse: collapse;
 }
 
+thead {
+    background-color: #e8e8e8;
+}
+
 th, td {
     border: 1px solid #cccccc;
     padding: 8px;
     text-align: center;
-}
-
-th {
-    background-color: #e8e8e8;
 }
 
 .judiemae {
