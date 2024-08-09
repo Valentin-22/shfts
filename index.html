@@ -44,11 +44,11 @@
             display: block;
             padding: 2px;
             border-radius: 4px;
-            color: #fff;
             margin: 1px;
             font-size: 0.75rem;
             width: 100%;
             text-align: center;
+            box-shadow: 1px 1px 2px rgba(0,0,0,0.2); /* Improve readability */
         }
 
         .agent-control {
@@ -62,12 +62,36 @@
             border-radius: 5px;
         }
 
+        .flex-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .day-checkboxes {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: flex-start;
+            margin-top: 5px;
+        }
+
+        .day-checkbox {
+            display: flex;
+            align-items: center;
+        }
+
+        input[type="checkbox"] {
+            margin-right: 5px;
+        }
+
         button {
             cursor: pointer;
-            border: 1px solid #ccc;
+            border: none;
             padding: 6px 12px;
             background-color: #f8f8f8;
             border-radius: 4px;
+            transition: background-color 0.3s;
         }
 
         button:hover {
@@ -109,6 +133,11 @@
     ];
     const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
+    function generateRandomColor() {
+        let hue = Math.floor(Math.random() * 360);
+        return `hsl(${hue}, 100%, 80%)`;
+    }
+
     function updateTable() {
         const tbody = document.querySelector('#scheduleTable tbody');
         tbody.innerHTML = '';
@@ -127,14 +156,11 @@
                 agentsWorkingThisHour.forEach(agent => {
                     const span = document.createElement('span');
                     span.style.backgroundColor = agent.color;
+                    span.style.color = '#000'; // improved text color for better readability
                     span.className = 'agent-cell';
                     span.textContent = agent.name;
                     cell.appendChild(span);
                 });
-
-                if (agentsWorkingThisHour.length === 1) {
-                    cell.style.backgroundColor = agentsWorkingThisHour[0].color;
-                }
 
                 row.appendChild(cell);
             }
@@ -154,11 +180,18 @@
         agents.forEach((agent, index) => {
             const div = document.createElement('div');
             div.className = 'agent-control';
-            let controlsHTML = `<div><input type="text" value="${agent.name}" onblur="updateAgentName(${index}, this.value)">
-                <button onclick="removeAgent(${index})">-</button></div>`;
-            controlsHTML += `<div>Start: <input type="number" value="${agent.startHour}" onchange="updateAgent(${index}, 'startHour', parseInt(this.value))"></div>`;
-            controlsHTML += `<div>End: <input type="number" value="${agent.endHour}" onchange="updateAgent(${index}, 'endHour', parseInt(this.value))"></div>`;
-            controlsHTML += `<div>Days: ${daysOfWeek.map(day => `<label><input type="checkbox" ${agent.days.includes(day) ? 'checked' : ''} onchange="toggleDay('${agent.name}', '${day}')">${day}</label>`).join(' ')}</div>`;
+            let controlsHTML = `<div class="flex-row">
+                <input type="text" value="${agent.name}" onblur="updateAgentName(${index}, this.value)">
+                <button onclick="removeAgent(${index})">-</button>
+            </div>`;
+            controlsHTML += `<div class="flex-row">Start: <input type="number" value="${agent.startHour}" onchange="updateAgent(${index}, 'startHour', parseInt(this.value))"></div>`;
+            controlsHTML += `<div class="flex-row">End: <input type="number" value="${agent.endHour}" onchange="updateAgent(${index}, 'endHour', parseInt(this.value))"></div>`;
+            controlsHTML += `<div class="day-checkboxes">${daysOfWeek.map(day => `
+                <div class="day-checkbox">
+                    <input type="checkbox" ${agent.days.includes(day) ? 'checked' : ''}
+                    onchange="toggleDay('${agent.name}', '${day}')"> ${day}
+                </div>`).join('')}
+            </div>`;
             div.innerHTML = controlsHTML;
             controls.appendChild(div);
         });
