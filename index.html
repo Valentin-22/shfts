@@ -12,6 +12,7 @@
             height: 100vh;
             font-family: Arial, sans-serif;
         }
+
         #sidebar {
             flex: 0 0 300px;
             padding: 20px;
@@ -19,15 +20,18 @@
             overflow-y: auto;
             border-right: 1px solid #ddd;
         }
+
         #content {
             flex-grow: 1;
             overflow-x: auto;
         }
+
         table {
             border-collapse: collapse;
             width: 100%;
             min-width: 600px;
         }
+
         th, td {
             border: 1px solid #dddddd;
             text-align: center;
@@ -35,15 +39,18 @@
             min-width: 70px;
             position: relative;
         }
+
         .agent-cell {
             display: block;
             padding: 2px;
             border-radius: 4px;
+            color: #fff;
             margin: 1px;
             font-size: 0.75rem;
-            width: calc(100% - 2px);
+            width: 100%;
             text-align: center;
         }
+
         .agent-control {
             display: flex;
             flex-direction: column;
@@ -54,14 +61,15 @@
             margin-top: 10px;
             border-radius: 5px;
         }
+
         button {
             cursor: pointer;
-            border: none;
+            border: 1px solid #ccc;
             padding: 6px 12px;
             background-color: #f8f8f8;
             border-radius: 4px;
-            transition: background-color 0.3s;
         }
+
         button:hover {
             background-color: #e2e2e2;
         }
@@ -116,20 +124,16 @@
                     agent.days.includes(daysOfWeek[day]) && isWorking(agent, hour)
                 );
 
+                agentsWorkingThisHour.forEach(agent => {
+                    const span = document.createElement('span');
+                    span.style.backgroundColor = agent.color;
+                    span.className = 'agent-cell';
+                    span.textContent = agent.name;
+                    cell.appendChild(span);
+                });
+
                 if (agentsWorkingThisHour.length === 1) {
-                    const agent = agentsWorkingThisHour[0];
-                    cell.textContent = agent.name;
-                    cell.style.backgroundColor = agent.color;
-                    cell.style.color = 'white';
-                } else if (agentsWorkingThisHour.length > 1) {
-                    agentsWorkingThisHour.forEach(agent => {
-                        const span = document.createElement('div');
-                        span.className = 'agent-cell';
-                        span.textContent = agent.name;
-                        span.style.backgroundColor = agent.color;
-                        span.style.color = 'white';
-                        cell.appendChild(span);
-                    });
+                    cell.style.backgroundColor = agentsWorkingThisHour[0].color;
                 }
 
                 row.appendChild(cell);
@@ -144,20 +148,60 @@
             : hour >= agent.startHour && hour < agent.endHour;
     }
 
+    function buildAgentControls() {
+        const controls = document.getElementById('agentControls');
+        controls.innerHTML = '';
+        agents.forEach((agent, index) => {
+            const div = document.createElement('div');
+            div.className = 'agent-control';
+            let controlsHTML = `<div><input type="text" value="${agent.name}" onblur="updateAgentName(${index}, this.value)">
+                <button onclick="removeAgent(${index})">-</button></div>`;
+            controlsHTML += `<div>Start: <input type="number" value="${agent.startHour}" onchange="updateAgent(${index}, 'startHour', parseInt(this.value))"></div>`;
+            controlsHTML += `<div>End: <input type="number" value="${agent.endHour}" onchange="updateAgent(${index}, 'endHour', parseInt(this.value))"></div>`;
+            controlsHTML += `<div>Days: ${daysOfWeek.map(day => `<label><input type="checkbox" ${agent.days.includes(day) ? 'checked' : ''} onchange="toggleDay('${agent.name}', '${day}')">${day}</label>`).join(' ')}</div>`;
+            div.innerHTML = controlsHTML;
+            controls.appendChild(div);
+        });
+    }
+
     function addAgent() {
         const newName = prompt("Enter new agent's name:");
         const newColor = generateRandomColor();
         if (newName) {
             agents.push({ name: newName, days: ['Monday'], startHour: 9, endHour: 17, color: newColor });
+            buildAgentControls();
             updateTable();
         }
     }
 
-    function generateRandomColor() {
-        let hue = Math.floor(Math.random() * 360);
-        return `hsl(${hue}, 100%, 80%)`;
+    function removeAgent(index) {
+        agents.splice(index, 1);
+        buildAgentControls();
+        updateTable();
     }
 
+    function updateAgent(index, field, value) {
+        agents[index][field] = value;
+        updateTable();
+    }
+
+    function updateAgentName(index, newName) {
+        agents[index].name = newName;
+        updateTable();
+    }
+
+    function toggleDay(agentName, day) {
+        const agent = agents.find(a => a.name === agentName);
+        const dayIndex = agent.days.indexOf(day);
+        if (dayIndex > -1) {
+            agent.days.splice(dayIndex, 1);
+        } else {
+            agent.days.push(day);
+        }
+        updateTable();
+    }
+
+    buildAgentControls();
     updateTable();
 </script>
 </body>
