@@ -14,12 +14,12 @@
         }
 
         #sidebar {
-            flex: 0 0 250px;
+            flex: 0 0 300px; /* Increased width to accommodate controls */
             padding: 20px;
             background-color: #f4f4f4;
             display: flex;
-            flex-direction: column; 
-            overflow-x: auto;
+            flex-direction: column;
+            overflow-y: auto; /* Allows vertical scrolling if needed */
         }
 
         #content {
@@ -60,14 +60,14 @@
             margin-bottom: 5px;
         }
 
-        .flex-row input,
-        .flex-row select {
-            margin-left: 10px;
+        .days-wrapper { /* Control the wrapping of day checkboxes */
+            display: flex;
+            flex-wrap: wrap;
         }
 
-        .judiemae { background-color: #ffcccb; }
-        .thelma { background-color: #add8e6; }
-        .newagent { background-color: #90ee90; }
+        .day-checkbox { 
+            margin-right: 10px; /* Space between checkboxes */
+        }
 
         button {
             cursor: pointer;
@@ -110,7 +110,7 @@
 
         function updateTable() {
             const tbody = document.querySelector('#scheduleTable tbody');
-            tbody.innerHTML = ''; 
+            tbody.innerHTML = '';
             for (let hour = 0; hour < 24; hour++) {
                 const row = document.createElement('tr');
                 const timeCell = document.createElement('td');
@@ -140,14 +140,14 @@
 
         function buildAgentControls() {
             const controls = document.getElementById('agentControls');
-            controls.innerHTML = ''; 
+            controls.innerHTML = '';
             agents.forEach((agent, index) => {
                 const div = document.createElement('div');
                 div.className = 'agent-control';
                 let controlsHTML = `<div class="flex-row"><strong>${agent.name}</strong><button onclick="removeAgent(${index})">-</button></div>`;
                 controlsHTML += `<div class="flex-row">Start: <input type="number" value="${agent.startHour}" onchange="updateAgent(${index}, 'startHour', parseInt(this.value))"></div>`;
                 controlsHTML += `<div class="flex-row">End: <input type="number" value="${agent.endHour}" onchange="updateAgent(${index}, 'endHour', parseInt(this.value))"></div>`;
-                controlsHTML += `<div class="flex-row">Days: ${daysOfWeek.map(day => `<input type="checkbox" ${agent.days.includes(day) ? 'checked' : ''} onchange="toggleDay('${agent.name}', '${day}')"> ${day}`).join(' ')}</div>`;
+                controlsHTML += `<div class="days-wrapper">Days: ${daysOfWeek.map(day => `<span class="day-checkbox"><input type="checkbox" ${agent.days.includes(day) ? 'checked' : ''} onchange="toggleDay('${agent.name}', '${day}')"> ${day}</span>`).join('')}</div>`;
                 div.innerHTML = controlsHTML;
                 controls.appendChild(div);
             });
