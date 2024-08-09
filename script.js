@@ -39,15 +39,23 @@ function updateTable() {
 function isWorking(agent, dayOfTheWeek, hour) {
     let startHour = agent.startHour;
     let endHour = agent.endHour;
+    let workingDays = agent.days;
 
-    if (dayOfTheWeek === 'Sunday' && startHour > endHour) {
-        if (hour < startHour && hour >= endHour) return false;
-        return hour >= startHour;
-    } else if (startHour > endHour) {
-        return (hour >= startHour || hour < endHour);
-    } else {
-        return (hour >= startHour && hour < endHour);
+    if (startHour > endHour) { // handle overnight shifts
+        if (workingDays.includes(dayOfTheWeek)) {
+            if (workingDays.indexOf(dayOfTheWeek) === 0 || dayOfTheWeek === 'Sunday') {
+                return hour >= startHour || hour < endHour;
+            } else if (workingDays.indexOf(dayOfTheWeek) === workingDays.length - 1) {
+                return hour < endHour;
+            } else {
+                return hour >= startHour || hour < endHour;
+            }
+        }
+    } else { // normal shift, within the same day
+        return workingDays.includes(dayOfTheWeek) && (hour >= startHour && hour < endHour);
     }
+
+    return false; // default, not working
 }
 
 function buildAgentControls() {
@@ -56,10 +64,11 @@ function buildAgentControls() {
     agents.forEach((agent, index) => {
         const div = document.createElement('div');
         div.className = 'agent-control';
-        let controlsHTML = `<div><input type="text" value="${agent.name}" onblur="updateAgentName(${index}, this.value)"><button onclick="removeAgent(${index})">-</button></div>
-                <div>Start: <input type="number" value="${agent.startHour}" onchange="updateAgent(${index}, 'startHour', parseInt(this.value))"></div>
-                <div>End: <input type="number" value="${agent.endHour}" onchange="updateAgent(${index}, 'endHour', parseInt(this.value))"></div>
-                <div>Days: ${daysOfWeek.map(day => `<label><input type="checkbox" ${agent.days.includes(day) ? 'checked' : ''} onchange="toggleDay('${agent.name}', '${day}')">${day}</label>`).join(' ')}</div>`;
+        let controlsHTML = `<div><input type="text" value="${agent.name}" onblur="updateAgentName(${index}, this.value)">
+            <button onclick="removeAgent(${index})">-</button></div>
+            <div>Start: <input type="number" value="${agent.startHour}" onchange="updateAgent(${index}, 'startHour', parseInt(this.value))"></div>
+            <div>End: <input type="number" value="${agent.endHour}" onchange="updateAgent(${index}, 'endHour', parseInt(this.value))"></div>
+            <div>Days: ${daysOfWeek.map(day => `<label><input type="checkbox" ${agent.days.includes(day) ? 'checked' : ''} onchange="toggleDay('${agent.name}', '${day}')">${day}</label>`).join(' ')}</div>`;
         div.innerHTML = controlsHTML;
         controls.appendChild(div);
     });
