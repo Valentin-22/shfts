@@ -14,10 +14,10 @@
         }
 
         #sidebar {
-            flex: 0 0 300px; /* Sidebar width */
+            flex: 0 0 300px;
             padding: 20px;
-            background: linear-gradient(180deg, #a7c7e7, #89cff0); /* Gradient background */
-            overflow-y: auto; /* Allows vertical scrolling */
+            background: linear-gradient(180deg, #a7c7e7, #89cff0);
+            overflow-y: auto;
             border-right: 1px solid #ddd;
         }
 
@@ -41,14 +41,13 @@
         }
 
         .agent-cell {
-            position: absolute;
-            display: inline-block;
+            display: block;
             padding: 2px;
             border-radius: 4px;
             color: #fff;
             margin: 1px;
             font-size: 0.75rem;
-            width: calc(100% - 2px);
+            width: 100%;
             text-align: center;
         }
 
@@ -63,16 +62,6 @@
             border-radius: 5px;
         }
 
-        .button-group {
-            display: flex;
-            gap: 4px;
-            justify-content: flex-start;
-        }
-
-        input[type="text"], input[type="number"], input[type="checkbox"] {
-            padding: 4px;
-        }
-
         button {
             cursor: pointer;
             border: 1px solid #ccc;
@@ -84,7 +73,6 @@
         button:hover {
             background-color: #e2e2e2;
         }
-
     </style>
 </head>
 <body>
@@ -121,12 +109,6 @@
     ];
     const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
-    function generateRandomColor() {
-        // Generates a bright pastel color
-        let hue = Math.floor(Math.random() * 360);
-        return `hsl(${hue}, 100%, 80%)`;
-    }
-
     function updateTable() {
         const tbody = document.querySelector('#scheduleTable tbody');
         tbody.innerHTML = '';
@@ -138,18 +120,22 @@
 
             for (let day = 0; day < 7; day++) {
                 const cell = document.createElement('td');
-                cell.style.position = 'relative';
-                
-                agents.forEach(agent => {
-                    const dayName = daysOfWeek[day];
-                    if (agent.days.includes(dayName) && isWorking(agent, hour)) {
-                        const span = document.createElement('span');
-                        span.style.backgroundColor = agent.color;
-                        span.className = 'agent-cell';
-                        span.textContent = agent.name;
-                        cell.appendChild(span);
-                    }
+                const agentsWorkingThisHour = agents.filter(agent =>
+                    agent.days.includes(daysOfWeek[day]) && isWorking(agent, hour)
+                );
+
+                agentsWorkingThisHour.forEach(agent => {
+                    const span = document.createElement('span');
+                    span.style.backgroundColor = agent.color;
+                    span.className = 'agent-cell';
+                    span.textContent = agent.name;
+                    cell.appendChild(span);
                 });
+
+                if (agentsWorkingThisHour.length === 1) {
+                    cell.style.backgroundColor = agentsWorkingThisHour[0].color;
+                }
+
                 row.appendChild(cell);
             }
             tbody.appendChild(row);
@@ -168,15 +154,11 @@
         agents.forEach((agent, index) => {
             const div = document.createElement('div');
             div.className = 'agent-control';
-            let controlsHTML = `<div class="flex-row">
-                <input type="text" value="${agent.name}" onblur="updateAgentName(${index}, this.value)">
-                <div class="button-group">
-                    <button onclick="removeAgent(${index})">-</button>
-                </div>
-            </div>`;
-            controlsHTML += `<div class="flex-row">Start: <input type="number" value="${agent.startHour}" onchange="updateAgent(${index}, 'startHour', parseInt(this.value))"></div>`;
-            controlsHTML += `<div class="flex-row">End: <input type="number" value="${agent.endHour}" onchange="updateAgent(${index}, 'endHour', parseInt(this.value))"></div>`;
-            controlsHTML += `<div class="flex-row">Days:${daysOfWeek.map(day => `<label class="day-checkbox"><input type="checkbox" ${agent.days.includes(day) ? 'checked' : ''} onchange="toggleDay('${agent.name}', '${day}')"> ${day}</label>`).join(' ')}</div>`;
+            let controlsHTML = `<div><input type="text" value="${agent.name}" onblur="updateAgentName(${index}, this.value)">
+                <button onclick="removeAgent(${index})">-</button></div>`;
+            controlsHTML += `<div>Start: <input type="number" value="${agent.startHour}" onchange="updateAgent(${index}, 'startHour', parseInt(this.value))"></div>`;
+            controlsHTML += `<div>End: <input type="number" value="${agent.endHour}" onchange="updateAgent(${index}, 'endHour', parseInt(this.value))"></div>`;
+            controlsHTML += `<div>Days: ${daysOfWeek.map(day => `<label><input type="checkbox" ${agent.days.includes(day) ? 'checked' : ''} onchange="toggleDay('${agent.name}', '${day}')">${day}</label>`).join(' ')}</div>`;
             div.innerHTML = controlsHTML;
             controls.appendChild(div);
         });
