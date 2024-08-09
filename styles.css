@@ -1,40 +1,43 @@
-body {
+body, html {
+    height: 100%;
+    margin: 0;
     font-family: Arial, sans-serif;
-    margin: 20px;
-    background-color: #f4f4f4;
-}
-
-h1 {
-    text-align: center;
-    margin-bottom: 20px;
+    font-size: 0.9em;
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
+    table-layout: fixed;
 }
 
 thead {
-    background-color: #e8e8e8;
+    background-color: #f4f4f4;
 }
 
 th, td {
-    border: 1px solid #cccccc;
-    padding: 8px;
+    border: 1px solid #ddd;
     text-align: center;
+    padding: 8px;
+}
+
+td {
+    height: 50px;
 }
 
 .judiemae {
-    background-color: #4caf50;
-    color: white;
+    background-color: #ffcccb; /* Light red */
 }
 
 .thelma {
-    background-color: #2196f3;
-    color: white;
+    background-color: #add8e6; /* Light blue */
 }
 
-.new-agent {
-    background-color: #ff9800;
-    color: white;
+.newagent {
+    background-color: #90ee90; /* Light green */
+}
+
+/* Overlapping shifts will have gradients indicating shared hours */
+.thelma.newagent {
+    background: linear-gradient(to right, #add8e6 0%, #add8e6 50%, #90ee90 50%, #90ee90 100%);
 }
