@@ -10,18 +10,32 @@
             padding: 0;
             font-family: 'Arial', sans-serif;
             background-color: #f9f9f9;
+            overflow-x: auto; /* Allows table to be scrollable horizontally if needed */
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            table-layout: fixed;
+            table-layout: fixed; /* Keeps columns evenly spaced */
+            font-size: 0.8rem; /* Smaller font size for fitting text in smaller cells */
+        }
+
+        thead {
+            display: flex;
+            background-color: #343a40;
+            color: #ffffff;
+            overflow-x: auto; /* Scroll horizontally on small screens */
         }
 
         thead th {
-            background-color: #343a40;
-            color: #ffffff;
+            flex: 1;
+            text-align: center;
             padding: 10px;
+            min-width: 90px; /* Ensure each header has a minimum width */
+        }
+
+        tbody tr {
+            display: flex;
         }
 
         th, td {
@@ -29,7 +43,9 @@
             text-align: center;
             vertical-align: middle;
             padding: 8px;
-            height: 30px; /* Adjust cell height for better visibility */
+            height: 40px; /* Smaller fixed height for cells */
+            flex: 1;  /* Flex basis for each cell */
+            white-space: nowrap; /* Keeps content on a single line */
         }
 
         .judiemae {
@@ -72,7 +88,6 @@
             { name: 'New Agent', days: ['Friday', 'Saturday', 'Sunday', 'Monday', 'Tuesday'], startHour: 13, endHour: 21 }
         ];
 
-        // Helper function to determine if agent is working at given hour
         function isWorking(agent, dayIndex, hour) {
             const dayName = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][dayIndex];
             if (agent.days.includes(dayName)) {
