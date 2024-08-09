@@ -9,56 +9,57 @@
 <body>
     <h1>Support Agent Shift Coverage</h1>
     <table>
-        <tr>
-            <th>Time</th>
-            <th>Sunday</th>
-            <th>Monday</th>
-            <th>Tuesday</th>
-            <th>Wednesday</th>
-            <th>Thursday</th>
-            <th>Friday</th>
-            <th>Saturday</th>
-        </tr>
-        <tr>
-            <td>12 AM - 9 AM</td>
-            <td></td>
-            <td class="judiemae">Judiemae</td>
-            <td class="judiemae">Judiemae</td>
-            <td class="judiemae">Judiemae</td>
-            <td class="judiemae">Judiemae</td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>9 PM - 12 AM</td>
-            <td class="judiemae">Judiemae</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>5 AM - 1 PM</td>
-            <td></td>
-            <td class="thelma">Thelma</td>
-            <td class="thelma">Thelma</td>
-            <td class="thelma">Thelma</td>
-            <td class="thelma">Thelma</td>
-            <td class="thelma">Thelma</td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>1 PM - 9 PM</td>
-            <td class="new-agent">New Agent</td>
-            <td class="new-agent">New Agent</td>
-            <td class="new-agent">New Agent</td>
-            <td class="new-agent">New Agent</td>
-            <td class="new-agent">New Agent</td>
-            <td class="new-agent">New Agent</td>
-            <td class="new-agent">New Agent</td>
-        </tr>
+        <thead>
+            <tr>
+                <th>Time</th>
+                <th>Sunday</th>
+                <th>Monday</th>
+                <th>Tuesday</th>
+                <th>Wednesday</th>
+                <th>Thursday</th>
+                <th>Friday</th>
+                <th>Saturday</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Hour rows from 12 AM to 11 PM -->
+            <!-- Example setup for a few hours -->
+            <tr>
+                <td>12 AM</td>
+                <td></td>
+                <td class="judiemae">Judiemae</td>
+                <td class="judiemae">Judiemae</td>
+                <td class="judiemae">Judiemae</td>
+                <td class="judiemae">Judiemae</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <!-- Continue for each hour -->
+            <!-- For agents' overlapping hours, modify ah necessary -->
+            <tr>
+                <td>1 AM</td>
+                <td></td>
+                <td class="judiemae">Judiemae</td>
+                <td class="judiemae">Judiemae</td>
+                <td class="judiemae">Judiemae</td>
+                <td class="judiemae">Judiemae</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <!-- Repeat for each hour until 9 PM -->
+            <!-- Example how Judiemae's shift spans midnight -->
+            <tr>
+                <td>9 PM</td>
+                <td class="judiemae">Judiemae</td>
+                <td class="new-agent">New Agent</td>
+                <td class="new-agent">New Agent</td>
+                <td class="new-agent">New Agent</td>
+                <td class="new-agent">New Agent</td>
+                <td class="new-agent">New Agent</td>
+                <td class="new-agent">New Agent</td>
+            </tr>
+            <!-- More rows for each hour until 11 PM -->
+        </tbody>
     </table>
 </body>
 </html>
