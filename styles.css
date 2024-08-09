@@ -3,49 +3,37 @@ body, html {
     padding: 0;
     font-family: 'Arial', sans-serif;
     background-color: #f9f9f9;
+    font-size: 0.8em; /* Smaller text to fit smaller cells */
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
+    table-layout: fixed;
 }
 
 thead th {
     background-color: #343a40;
     color: #ffffff;
+    padding: 10px;
 }
 
 th, td {
     border: 1px solid #dddddd;
     text-align: center;
     vertical-align: middle;
-    padding: 10px;
-}
-
-td {
-    background-color: #FFFFFF;
-    height: 40px;
+    padding: 5px;
+    height: 30px; /* Smaller cell height */
 }
 
 .judiemae {
-    background-color: #ffcccb;  /* Light red background for Judiemae */
+    background-color: #ffcccb;
 }
 
 .thelma {
-    background-color: #add8e6;  /* Light blue background for Thelma */
+    background-color: #add8e6;
 }
 
 .newagent {
-    background-color: #90ee90;  /* Light green background for New Agent */
-}
-
-/* Overlapping shifts uses gradient color */
-.thelma.newagent {
-    background: linear-gradient(90deg, #add8e6 50%, #90ee90 50%);
-}
-
-/* Ensure you add !important to assure the gradients take preference if needed */
-.thelma.newagent {
-    background: linear-gradient(to right, #add8e6 50%, #90ee90 50%) !important;
+    background-color: #90ee90;
 }
