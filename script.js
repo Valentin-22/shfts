@@ -18,7 +18,7 @@ function updateTable() {
             const cell = document.createElement('td');
             const dayOfTheWeek = daysOfWeek[day];
             const agentsWorkingThisHour = agents.filter(agent =>
-                agent.days.includes(dayOfTheWeek) && isWorking(agent, dayOfTheWeek, hour)
+                isWorking(agent, dayOfTheWeek, hour)
             );
             agentsWorkingThisHour.forEach(agent => {
                 const span = document.createElement('span');
@@ -37,25 +37,29 @@ function updateTable() {
 }
 
 function isWorking(agent, dayOfTheWeek, hour) {
+    const index = daysOfWeek.indexOf(dayOfTheWeek);
     let startHour = agent.startHour;
     let endHour = agent.endHour;
-    let workingDays = agent.days;
-
+    
     if (startHour > endHour) { // handle overnight shifts
-        if (workingDays.includes(dayOfTheWeek)) {
-            if (workingDays.indexOf(dayOfTheWeek) === 0 || dayOfTheWeek === 'Sunday') {
-                return hour >= startHour || hour < endHour;
-            } else if (workingDays.indexOf(dayOfTheWeek) === workingDays.length - 1) {
-                return hour < endHour;
-            } else {
-                return hour >= startHour || hour < endHour;
+        if (agent.days.includes(dayOfTheWeek)) {
+            if (hour >= startHour && hour <= 23) {
+                return true;
             }
         }
-    } else { // normal shift, within the same day
-        return workingDays.includes(dayOfTheWeek) && (hour >= startHour && hour < endHour);
+        const previousDayIndex = (index === 0) ? 6 : index - 1;
+        const previousDay = daysOfWeek[previousDayIndex];
+        if (agent.days.includes(previousDay)) {
+            if (hour >= 0 && hour < endHour) {
+                return true;
+            }
+        }
+    } else { // regular shift within the same day
+        if (agent.days.includes(dayOfTheWeek) && hour >= startHour && hour < endHour) {
+            return true;
+        }
     }
-
-    return false; // default, not working
+    return false;
 }
 
 function buildAgentControls() {
@@ -76,7 +80,7 @@ function buildAgentControls() {
 
 function addAgent() {
     const newName = prompt("Enter new agent's name:");
-    const newColor = '#'+(Math.random()*0xFFFFFF<<0).toString(16);
+    const newColor = `#${Math.floor(Math.random() * 16777215).toString(16)}`;
     if (newName) {
         agents.push({ name: newName, days: ['Monday'], startHour: 9, endHour: 17, color: newColor });
         buildAgentControls();
