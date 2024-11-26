@@ -122,7 +122,7 @@ button {
 }
 
 button i {
-  font-size: 16px; /* Adjust the size as needed */
+  font-size: 16px;
 }
 
 .agent-name {
@@ -131,22 +131,6 @@ button i {
 
 button:hover {
   background-color: #187bc5;
-}
-
-/* Input field styling */
-input[type='text'],
-input[type='number'] {
-  border: 1px solid #ddd;
-  padding: 6px;
-  border-radius: 4px;
-  width: 100%;
-  margin-top: 5px;
-}
-
-input[type='text']:focus,
-input[type='number']:focus {
-  border-color: #1e90ff;
-  outline: none;
 }
 
 /* Custom style for the color input */
@@ -164,4 +148,46 @@ label {
   color: black;
   font-weight: 400;
   white-space: nowrap;
+}
+
+/* Sheet controls styling */
+#sheetControls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+#sheetControls button {
+  position: relative;
+  cursor: pointer;
+  padding: 8px 16px;
+  margin-right: 10px;
+  background-color: #1e90ff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+#sheetControls button:hover {
+  background-color: #187bc5;
+}
+
+#sheetControls button button {
+  width: 20px;
+  height: 20px;
+  font-size: 12px;
+  position: absolute;
+  right: -12px;
+  top: -8px;
+  border-radius: 50%;
+  background-color: #ff6b6b;
+  color: white;
+  border: none;
+  transition: background-color 0.3s;
+}
+
+#sheetControls button button:hover {
+  background-color: #e63946;
 }
